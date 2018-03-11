@@ -38,7 +38,6 @@
     },
     created() {
       this._getDetail()
-      console.log(this.recommend.dissid)
     },
     methods: {
       _getDetail() {
@@ -64,7 +63,6 @@
             ret.push(createSong(musicData))
           }
         })
-        console.log(ret)
         return ret
       }
     },

@@ -52,13 +52,11 @@ export default {
     },
     _getRecommend () {
       getRecommend().then((res) => {
-//        console.log(res.data)
         this.slides = res.data.slider
       })
     },
     _getDiss () {
       getDiss().then((res) => {
-        console.log(res.data)
         this.recommends = res.data.list
       })
     },

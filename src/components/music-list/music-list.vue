@@ -79,7 +79,6 @@
       ])
     },
     mounted () {
-      console.log(this.currentIndex)
       this.$refs.scroll.$el.style.top = `${this.$refs.img_wrapper.clientHeight}px`
     },
     components: {

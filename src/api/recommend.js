@@ -21,7 +21,6 @@ export function getDiss() {
   const data = Object.assign({}, commonParams, {
     picmid: 1,
     rnd: Math.random(),
-    // g_tk: 1135554968,
     jsonpCallback: 'getPlaylist',
     loginUin: 747829772,
     hostUin: 0,
