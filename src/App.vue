@@ -2,9 +2,9 @@
   <div id="app">
     <v-header></v-header>
     <v-tab></v-tab>
-    <keep-alive>
+    <!--<keep-alive>-->
       <router-view></router-view>
-    </keep-alive>
+    <!--</keep-alive>-->
   </div>
 </template>
 

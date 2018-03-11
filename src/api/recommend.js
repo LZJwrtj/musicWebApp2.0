@@ -16,25 +16,6 @@ export function getRecommend() {
   return jsonp(url, data, options)
 }
 
-// export function getDetail(recommendId) {
-//   const url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
-//   const data = Object.assign({}, commonParams, {
-//     platform: 'h5',
-//     needNewCode: 1,
-//     new_format: 1,
-//     pic: 500,
-//     disstid: recommendId,
-//     type: 1,
-//     json: 1,
-//     utf8: 1,
-//     onlysong: 0,
-//     nosign: 1
-//   })
-//   return jsonp(url, data, options)
-// }
-
-// ?picmid=1&rnd=0.13608446194498391&g_tk=1135554968&jsonpCallback=getPlaylist&loginUin=337825561&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&categoryId=10000000&sortId=5&sin=0&ein=29
-
 export function getDiss() {
   const url = 'api/getDiss'
   const data = Object.assign({}, commonParams, {
@@ -52,6 +33,29 @@ export function getDiss() {
     sin: 0,
     ein: 29,
     format: 'json'
+  })
+  return axios.get(url, {
+    params: data
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+
+export function getDetail(id) {
+  const url = 'api/getCdInfo'
+  const data = Object.assign({}, commonParams, {
+    type: 1,
+    json: 1,
+    utf8: 1,
+    onlysong: 0,
+    disstid: id,
+    g_tk: 1101865453,
+    // jsonpCallback: 'playlistinfoCallback',
+    loginUin: 747839772,
+    hostUin: 0,
+    platform: 'yqq',
+    needNewCode: 0,
+    uin: ''
   })
   return axios.get(url, {
     params: data

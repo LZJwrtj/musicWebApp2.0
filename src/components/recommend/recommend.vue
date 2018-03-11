@@ -1,28 +1,33 @@
 <template>
   <div id="recommend">
-    <v-slide :slides="slides"></v-slide>
-    <div class="content">
-      <h2 class="title">热门推荐</h2>
-      <ul class="clear">
-        <li v-for="item in recommends" :key="item.id" @click="selectItem(item)">
-          <div class="img-wrapper">
-            <img v-lazy="item.imgurl" alt="">
-            <span class="listen_count"><i class="icon-earphone"></i>{{(item.
-              listennum / 10000).toFixed(1)}}万</span>
-            <span class="icon_play"></span>
-          </div>
-          <div class="des">
-            <p class="des_title">{{item.dissname}}</p>
-            <p class="author">{{item.creator.name}}</p>
-          </div>
-        </li>
-      </ul>
-    </div>
+    <scroll class="recommend_content" :data="recommends">
+      <div>
+        <v-slide :slides="slides"></v-slide>
+        <div class="content">
+          <h2 class="title">热门推荐</h2>
+          <ul class="clear">
+            <li v-for="item in recommends" :key="item.id" @click="selectItem(item)">
+              <div class="img-wrapper">
+                <img v-lazy="item.imgurl" alt="">
+                <span class="listen_count"><i class="icon-earphone"></i>{{(item.
+                  listennum / 10000).toFixed(1)}}万</span>
+                <span class="icon_play"></span>
+              </div>
+              <div class="des">
+                <p class="des_title">{{item.dissname}}</p>
+                <p class="author">{{item.creator.name}}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </scroll>
     <router-view></router-view>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import Scroll from 'components/scroll/scroll'
 import {getRecommend, getDiss} from 'api/recommend'
 import Slide from 'components/slide/slide'
 import {mapMutations} from 'vuex'
@@ -41,7 +46,7 @@ export default {
   methods: {
     selectItem(item) {
       this.$router.push({
-        path: `/recommend/${item.id}`
+        path: `/recommend/${item.dissid}`
       })
       this.setRecommend(item)
     },
@@ -62,7 +67,8 @@ export default {
     })
   },
   components: {
-    'v-slide': Slide
+    'v-slide': Slide,
+    'scroll': Scroll
   }
 }
 </script>

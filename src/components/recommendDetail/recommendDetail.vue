@@ -1,70 +1,75 @@
 <template>
   <transition name="slideLeft">
-    <!--<music-list :image="image" :title="title" :songs="songs" :des="des" :author="author"></music-list>-->
+    <music-list :image="image" :title="title" :songs="songs" :des="des" :author="author"></music-list>
   </transition>
 </template>
 
 <script type="text/ecmascript-6">
   import {mapGetters} from 'vuex'
-//  import {getDetail} from 'api/recommend'
-//  import MusicList from 'components/music-list/music-list'
-//  import {createSong} from 'assets/js/song'
+  import {getDetail} from 'api/recommend'
+  import MusicList from 'components/music-list/music-list'
+  import {createSong, isValidMusic, processSongsUrl} from 'assets/js/song'
+  import {ERR_OK} from 'api/config'
 
   export default {
     data() {
       return {
-//        songLists: {},
         recommendDetails: {},
         songLists: []
       }
     },
     computed: {
-//      image() {
-//        return this.recommendDetails.logo
-//      },
-//      title() {
-//        return this.recommendDetails.dissname
-//      },
-//      songs () {
-//        return this.songLists
-//      },
-//      des() {
-//        return `${(this.recommendDetails.visitnum / 10000).toFixed(1)}万人播放`
-//      },
-//      author() {
-//        return `来自:${this.recommendDetails.nickname}`
-//      },
+      image() {
+        return this.recommendDetails.logo
+      },
+      title() {
+        return this.recommendDetails.dissname
+      },
+      songs () {
+        return this.songLists
+      },
+      des() {
+        return `${(this.recommendDetails.visitnum / 10000).toFixed(1)}万人播放`
+      },
+      author() {
+        return `来自:${this.recommendDetails.nickname}`
+      },
       ...mapGetters(['recommend'])
     },
     created() {
       this._getDetail()
+      console.log(this.recommend.dissid)
     },
     methods: {
       _getDetail() {
-//        if (!this.recommend.id) {
-//          this.$router.push({
-//            path: '/recommend'
-//          })
-//          return
-//        }
-//        getDetail(this.recommend.id).then((res) => {
-//          console.log(res)
-//          this.recommendDetails = res.cdlist[0]
-//          this.songLists = this._normalizeSongs(res.cdlist[0].songlist)
-//        })
+        if (!this.recommend.dissid) {
+          this.$router.push({
+            path: '/recommend'
+          })
+          return
+        }
+        getDetail(this.recommend.dissid).then((res) => {
+          this.recommendDetails = res.cdlist[0]
+          if (res.code === ERR_OK) {
+            processSongsUrl(this._normalizeSongs(res.cdlist[0].songlist)).then((songs) => {
+              this.songLists = songs
+            })
+          }
+        })
+      },
+      _normalizeSongs (list) {
+        let ret = []
+        list.forEach((musicData) => {
+          if (isValidMusic(musicData)) {
+            ret.push(createSong(musicData))
+          }
+        })
+        console.log(ret)
+        return ret
       }
-//      _normalizeSongs (list) {
-//        let ret = []
-//        list.forEach((item) => {
-//          if (item.id && item.album.id) {
-//            ret.push(createSong(item))
-//          }
-//        })
-//        return ret
-//      }
     },
     components: {
-//      MusicList
+      MusicList
     }
   }
 

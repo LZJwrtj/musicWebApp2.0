@@ -15,21 +15,21 @@
       <span class="icon_play icon-play" @click="playAll"></span>
       <div class="gradient"></div>
       <div class="loading-container" v-show="!songs.length">
-        <loading></loading>
+        <!--<loading></loading>-->
       </div>
     </div>
-    <!--<scroll :data="songs" class="list" ref="scroll">-->
-      <!--<div id="song-list-wrapper">-->
-        <!--<song-list @selectItem="selectItem" :songs="songs"></song-list>-->
-      <!--</div>-->
-    <!--</scroll>-->
+    <scroll :data="songs" class="list" ref="scroll">
+      <div id="song-list-wrapper">
+        <song-list @selectItem="selectItem" :songs="songs"></song-list>
+      </div>
+    </scroll>
 
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-//  import Scroll from 'components/scroll/scroll.vue'
-//  import SongList from 'components/song-list/song-list.vue'
+  import Scroll from 'components/scroll/scroll.vue'
+  import SongList from 'components/song-list/song-list.vue'
 //  import Loading from 'components/loading/loading.vue'
   import {mapActions} from 'vuex'
 
@@ -84,8 +84,8 @@
     },
     components: {
       Scroll,
-      SongList,
-      Loading
+      SongList
+//      Loading
     }
   }
 
