@@ -65,14 +65,14 @@
         <span class="mini_bar icon-bar"></span>
       </div>
     </div>
-    <audio ref="audio" :src="currentSong.url" @play="ready" @error="error" @timeupdate="updateTime" @ended="end"></audio>
+    <audio ref="audio" :src="currentSong.url" @playing="ready" @error="error" @pause="paused" @timeupdate="updateTime" @ended="end"></audio>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import {mapGetters, mapMutations} from 'vuex'
   import {playMode} from 'assets/js/config'
-//  import {shuffle} from 'assets/js/until'
+  import {shuffle} from 'assets/js/util'
 //  import Lyric from 'lyric-parser'
   import Scroll from 'components/scroll/scroll.vue'
 
@@ -105,7 +105,7 @@
         'fullScreen',
         'playState',
         'currentIndex',
-//        'mode',
+        'mode',
 //        'sequenceList',
         'currentSong'
       ])
@@ -182,8 +182,14 @@
       ready() {
         this.songReady = true
       },
+      paused() {
+        this.setPlayState(false)
+//        if (this.currentLyric) {
+//          this.currentLyric.stop()
+//        }
+      },
       error() {
-//        this.songReady = true
+        this.songReady = true
       },
       updateTime(e) {
         this.currentTime = e.target.currentTime
@@ -200,16 +206,16 @@
         }
       },
       changeMode() {
-//        let mode = (this.mode + 1) % 3
-//        this.setMode(mode)
-//        let list = null
-//        if (mode === playMode.random) {
-//          list = shuffle(this.sequenceList)
-//        } else {
-//          list = this.sequenceList
-//        }
-//        this.resetCurrentIndex(list)
-//        this.setPlayList(list)
+        let mode = (this.mode + 1) % 3
+        this.setMode(mode)
+        let list = null
+        if (mode === playMode.random) {
+          list = shuffle(this.sequenceList)
+        } else {
+          list = this.sequenceList
+        }
+        this.resetCurrentIndex(list)
+        this.setPlayList(list)
       },
       resetCurrentIndex(list) {
         let index = list.findIndex((item) => {
@@ -257,15 +263,18 @@
         setFullScreen: 'SET_FULLSCREEN',
         setPlayState: 'SET_PLAYSTATE',
         setCurrentIndex: 'SET_CURRENT_INDEX',
-        setMode: 'SET_MODE',
+        setMode: 'SET_PLAY_MODE',
         setPlayList: 'SET_PLAYLIST'
       })
     },
     watch: {
-      currentSong () {
-        this.$nextTick(() => {
+      currentSong (newSong, oldSong) {
+        if (!newSong.id || !newSong.url || (newSong.id === oldSong.id)) {
+          return
+        }
+        setTimeout(() => {
           this.$refs.audio.play()
-        })
+        }, 200)
       },
       playState (newPlayState) {
         const audio = this.$refs.audio

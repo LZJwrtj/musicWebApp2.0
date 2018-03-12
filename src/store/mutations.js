@@ -7,6 +7,9 @@ const mutations = {
   [types.SET_PLAYLIST] (state, list) {
     state.playList = list
   },
+  [types.SET_SEQUENCELIST] (state, list) {
+    state.sequenceList = list
+  },
   [types.SET_CURRENT_INDEX] (state, index) {
     state.currentIndex = index
   },
@@ -15,6 +18,9 @@ const mutations = {
   },
   [types.SET_PLAYSTATE] (state, flag) {
     state.playState = flag
+  },
+  [types.SET_PLAY_MODE] (state, mode) {
+    state.mode = mode
   }
 }
 export default mutations
