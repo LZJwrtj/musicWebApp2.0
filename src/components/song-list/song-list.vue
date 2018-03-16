@@ -29,7 +29,6 @@
         return `${item.singer}·${item.album}`
       },
       selectItem (item, index) {
-        console.log(item, index)
         this.$emit('selectItem', item, index)
       }
     }

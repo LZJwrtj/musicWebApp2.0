@@ -73,7 +73,7 @@
   import {mapGetters, mapMutations} from 'vuex'
   import {playMode} from 'assets/js/config'
   import {shuffle} from 'assets/js/util'
-//  import Lyric from 'lyric-parser'
+  import Lyric from 'lyric-parser'
   import Scroll from 'components/scroll/scroll.vue'
 
   export default {
@@ -121,63 +121,63 @@
         if (!this.songReady) {
           return
         }
-//        if (this.currentLyric) {
-//          this.currentLyric.togglePlay()
-//        }
+        if (this.currentLyric) {
+          this.currentLyric.togglePlay()
+        }
         this.setPlayState(!this.playState)
 //        if (this.currentLyric) {
 //          this.currentLyric.stop()
 //        }
       },
       end() {
-//        if (this.mode === playMode.loop) {
-//          this.loop()
-//        } else {
-//          this.nextSong()
-//        }
+        if (this.mode === playMode.loop) {
+          this.loop()
+        } else {
+          this.nextSong()
+        }
       },
       loop() {
-//        this.$refs.audio.currentTime = 0
-//        this.$refs.audio.play()
-//        if (this.currentLyric) {
-//          this.currentLyric.seek(0)
-//        }
+        this.$refs.audio.currentTime = 0
+        this.$refs.audio.play()
+        if (this.currentLyric) {
+          this.currentLyric.seek(0)
+        }
       },
       prevSong() {
-//        if (!this.songReady) {
-//          return
-//        }
-//        if (this.playList.length === 1) {
-//          this.loop()
-//          return
-//        }
-//        let index = this.currentIndex - 1
-//        if (index === -1) {
-//          index = this.playList.length - 1
-//        }
-//        this.setCurrentIndex(index)
-//        if (!this.playState) {
-//          this.togglePlay()
-//        }
-//        this.songReady = false
+        if (!this.songReady) {
+          return
+        }
+        if (this.playList.length === 1) {
+          this.loop()
+          return
+        }
+        let index = this.currentIndex - 1
+        if (index === -1) {
+          index = this.playList.length - 1
+        }
+        this.setCurrentIndex(index)
+        if (!this.playState) {
+          this.togglePlay()
+        }
+        this.songReady = false
       },
       nextSong() {
-//        if (!this.songReady) {
-//          return
-//        }
-//        if (this.playList.length === 1) {
-//          this.loop()
-//          return
-//        }
-//        let index = this.currentIndex + 1
-//        if (index === this.playList.length) {
-//          index = 0
-//        }
-//        this.setCurrentIndex(index)
-//        if (!this.playState) {
-//          this.togglePlay()
-//        }
-//        this.songReady = false
+        if (!this.songReady) {
+          return
+        }
+        if (this.playList.length === 1) {
+          this.loop()
+          return
+        }
+        let index = this.currentIndex + 1
+        if (index === this.playList.length) {
+          index = 0
+        }
+        this.setCurrentIndex(index)
+        if (!this.playState) {
+          this.togglePlay()
+        }
+        this.songReady = false
       },
       ready() {
         this.songReady = true
@@ -224,16 +224,16 @@
         this.setCurrentIndex(index)
       },
       getLyric() {
-//        this.currentSong.getLyric().then((lyric) => {
-//          this.currentLyric = new Lyric(lyric, this.handleLyric)
-//          this.lyrics = this.currentLyric.lines
-//          if (this.playState) {
-//            this.currentLyric.play()
-//          }
-//        }).catch(() => {
-//          this.currentLyric = null
-//          this.currentLineNum = 0
-//        })
+        this.currentSong.getLyric().then((lyric) => {
+          this.currentLyric = new Lyric(lyric, this.handleLyric)
+          this.lyrics = this.currentLyric.lines
+          if (this.playState) {
+            this.currentLyric.play()
+          }
+        }).catch(() => {
+          this.currentLyric = null
+          this.currentLineNum = 0
+        })
       },
       handleLyric({lineNum, txt}) {
         this.currentLineNum = lineNum
@@ -243,7 +243,7 @@
         } else {
           this.$refs.lyricList.scrollTo(0, 0, 1000)
         }
-//        console.log(txt)
+        console.log(txt)
       },
       format(interval) {
         interval = Math.floor(interval)
@@ -272,9 +272,19 @@
         if (!newSong.id || !newSong.url || (newSong.id === oldSong.id)) {
           return
         }
-        setTimeout(() => {
+        if (this.currentLyric) {
+          this.currentLyric.stop()
+        }
+        // 若歌曲 5s 未播放，则认为超时，修改状态确保可以切换歌曲。
+        clearTimeout(this.timer1)
+        this.timer1 = setTimeout(() => {
+          this.songReady = true
+        }, 5000)
+        clearTimeout(this.timer2)
+        this.timer2 = setTimeout(() => {
           this.$refs.audio.play()
-        }, 200)
+          this.getLyric()
+        }, 1000)
       },
       playState (newPlayState) {
         const audio = this.$refs.audio

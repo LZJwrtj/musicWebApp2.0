@@ -1,5 +1,7 @@
+/* eslint-disable prefer-promise-reject-errors */
 import {ERR_OK} from '../../api/config'
-import {getSongsUrl} from '../../api/song'
+import {getSongsUrl, getLyric} from '../../api/song'
+import {Base64} from 'js-base64'
 
 export default class Song {
   constructor({id, mid, singer, name, album, duration, image, url}) {
@@ -12,6 +14,22 @@ export default class Song {
     this.image = image
     this.filename = `C400${this.mid}.m4a`
     this.url = url
+  }
+  getLyric() {
+    if (this.lyric) {
+      return Promise.resolve(this.lyric)
+    }
+
+    return new Promise((resolve, reject) => {
+      getLyric(this.mid).then((res) => {
+        if (res.retcode === ERR_OK) {
+          this.lyric = Base64.decode(res.lyric)
+          resolve(this.lyric)
+        } else {
+          reject('no lyric')
+        }
+      })
+    })
   }
 }
 export function createSong(musicData) {
@@ -57,4 +75,3 @@ export function processSongsUrl(songs) {
     return songs
   })
 }
-// http://dl.stream.qqmusic.qq.com/C400004YMsBJ1O5UNp.m4a?vkey=CF2C7A49CB686550301725EB66395D0711313A98749FD550655F453040281CA31E9AC41958037DFDC4C6F7EBA8B7456EF373CB510DA3EC74&guid=1888430952&uin=337825561&fromtag=66
