@@ -106,7 +106,7 @@
         'playState',
         'currentIndex',
         'mode',
-//        'sequenceList',
+        'sequenceList',
         'currentSong'
       ])
     },
@@ -125,9 +125,6 @@
           this.currentLyric.togglePlay()
         }
         this.setPlayState(!this.playState)
-//        if (this.currentLyric) {
-//          this.currentLyric.stop()
-//        }
       },
       end() {
         if (this.mode === playMode.loop) {
@@ -139,6 +136,7 @@
       loop() {
         this.$refs.audio.currentTime = 0
         this.$refs.audio.play()
+        this.setPlayState(true)
         if (this.currentLyric) {
           this.currentLyric.seek(0)
         }
@@ -214,6 +212,7 @@
         } else {
           list = this.sequenceList
         }
+        console.log(list)
         this.resetCurrentIndex(list)
         this.setPlayList(list)
       },
@@ -243,7 +242,7 @@
         } else {
           this.$refs.lyricList.scrollTo(0, 0, 1000)
         }
-        console.log(txt)
+//        console.log(txt)
       },
       format(interval) {
         interval = Math.floor(interval)
@@ -293,30 +292,6 @@
         })
       }
     },
-//    watch: {
-//      currentSong(newSong, oldSong) {
-//        if (!newSong.id) {
-//          return
-//        }
-//        if (newSong.id === oldSong.id) {
-//          return
-//        }
-//        if (this.currentLyric) {
-//          this.currentLyric.stop()
-//        }
-//        clearTimeout(this.timer)
-//        this.timer = setTimeout(() => {
-//          this.$refs.audio.play()
-//          this.getLyric()
-//        }, 1000)
-//      },
-//      playState(newPlayState) {
-//        const audio = this.$refs.audio
-//        this.$nextTick(() => {
-//          newPlayState ? audio.play() : audio.pause()
-//        })
-//      }
-//    },
     components: {
       Scroll
     }
