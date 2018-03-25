@@ -212,7 +212,6 @@
         } else {
           list = this.sequenceList
         }
-        console.log(list)
         this.resetCurrentIndex(list)
         this.setPlayList(list)
       },
