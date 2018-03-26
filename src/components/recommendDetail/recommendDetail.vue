@@ -49,6 +49,7 @@
         }
         getDetail(this.recommend.dissid).then((res) => {
           this.recommendDetails = res.cdlist[0]
+          console.log(res)
           if (res.code === ERR_OK) {
             processSongsUrl(this._normalizeSongs(res.cdlist[0].songlist)).then((songs) => {
               this.songLists = songs

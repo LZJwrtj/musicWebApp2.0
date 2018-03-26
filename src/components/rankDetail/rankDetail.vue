@@ -35,11 +35,9 @@
           this.rankData = res
           this.imageUrl = this.rankData.songlist[0].data.albummid
           this.rankDetail = res.topinfo
-//          this.songLists = this._normalizeSongs(res.songlist)
           if (res.code === ERR_OK) {
             processSongsUrl(this._normalizeSongs(res.songlist)).then((songs) => {
               this.songLists = songs
-              console.log(this.songLists)
             })
           }
         })
