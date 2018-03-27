@@ -1,5 +1,6 @@
 <template>
   <scroll id="suggest"
+          ref="suggest"
           :pullUp="pullUp"
           :data="results"
           @scrollToEnd="searchMore">
@@ -21,11 +22,12 @@
 
 <script type="text/ecmascript-6">
   import {search} from 'api/search'
-  import {createSong} from 'assets/js/song'
+  import {createSong, isValidMusic, processSongsUrl} from 'assets/js/song'
   import Scroll from 'components/scroll/scroll'
 //  import Loading from 'components/loading/loading'
   import Singer from 'assets/js/singer'
   import {mapMutations, mapActions} from 'vuex'
+  import { ERR_OK } from 'api/config'
 
   const TYPE_SINGER = 'singer'
   const perpage = 20
@@ -51,10 +53,21 @@
     },
     methods: {
       search() {
+//        this.hasMore = true
+//        search(this.value, this.page, this.showSinger, perpage).then((res) => {
+//          this.results = this._getResult(res.data)
+//          this._checkMore(res.data)
+//        })
+        this.page = 1
         this.hasMore = true
-        search(this.value, this.page, this.showSinger, perpage).then((res) => {
-          this.results = this._getResult(res.data)
-          this._checkMore(res.data)
+        this.$refs.suggest.scrollTo(0, 0)
+        search(this.query, this.page, this.showSinger, perpage).then((res) => {
+          if (res.code === ERR_OK) {
+            this._getResult(res.data).then((result) => {
+              this.results = result
+            })
+            this._checkMore(res.data)
+          }
         })
       },
       searchMore() {
@@ -106,19 +119,19 @@
       },
       _getResult(data) {
         let ret = []
-        if (data.zhida && data.zhida.singerid) {
+        if (data.zhida && data.zhida.singerid && this.page === 1) {
           ret.push({...data.zhida, ...{type: TYPE_SINGER}})
         }
-        if (data.song) {
-          ret = ret.concat(this._normalizeSong(data.song.list))
-        }
-        return ret
+        return processSongsUrl(this._normalizeSongs(data.song.list)).then((songs) => {
+          ret = ret.concat(songs)
+          return ret
+        })
       },
-      _normalizeSong(list) {
+      _normalizeSongs(list) {
         let ret = []
-        list.forEach((item) => {
-          if (item.songid && item.albumid) {
-            ret.push(createSong(item))
+        list.forEach((musicData) => {
+          if (isValidMusic(musicData)) {
+            ret.push(createSong(musicData))
           }
         })
         return ret

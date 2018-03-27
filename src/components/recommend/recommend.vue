@@ -19,6 +19,9 @@
               </div>
             </li>
           </ul>
+          <div class="loading_container" v-show="!recommends.length">
+            <loading></loading>
+          </div>
         </div>
       </div>
     </scroll>
@@ -28,9 +31,10 @@
 
 <script type="text/ecmascript-6">
   import Scroll from 'components/scroll/scroll'
-import {getRecommend, getDiss} from 'api/recommend'
-import Slide from 'components/slide/slide'
-import {mapMutations} from 'vuex'
+  import Loading from 'components/loading/loading'
+  import {getRecommend, getDiss} from 'api/recommend'
+  import Slide from 'components/slide/slide'
+  import {mapMutations} from 'vuex'
 
 export default {
   data () {
@@ -66,7 +70,8 @@ export default {
   },
   components: {
     'v-slide': Slide,
-    'scroll': Scroll
+    'scroll': Scroll,
+    'loading': Loading
   }
 }
 </script>

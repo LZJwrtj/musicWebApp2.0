@@ -19,7 +19,7 @@
           </div>
         </li>
       </ul>
-      <!--<loading></loading>-->
+      <loading></loading>
     </scroll>
     <router-view></router-view>
   </div>
@@ -29,7 +29,7 @@
   import {getRank} from 'api/rank'
   import Scroll from 'components/scroll/scroll'
   import {mapMutations} from 'vuex'
-//  import Loading from 'components/loading/loading'
+  import Loading from 'components/loading/loading'
 
   export default {
     data() {
@@ -57,8 +57,8 @@
       })
     },
     components: {
-      Scroll
-//      Loading
+      Scroll,
+      Loading
     }
   }
 </script>

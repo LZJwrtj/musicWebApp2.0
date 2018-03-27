@@ -272,6 +272,11 @@
         }
         if (this.currentLyric) {
           this.currentLyric.stop()
+
+          this.currentLyric = null
+          this.currentTime = 0
+          this.playingLyric = ''
+          this.currentLineNum = 0
         }
         // 若歌曲 5s 未播放，则认为超时，修改状态确保可以切换歌曲。
         clearTimeout(this.timer1)

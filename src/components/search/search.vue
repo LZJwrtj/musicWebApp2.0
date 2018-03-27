@@ -45,6 +45,7 @@
           if (res.code === 0) {
             this.hotKeys = res.data.hotkey.slice(0, 10)
           }
+          console.log(res.data)
         })
       }
     },
