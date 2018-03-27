@@ -1,8 +1,10 @@
 import {commonParams} from './config'
-// import jsonp from 'assets/js/jsonp'
 import axios from 'axios'
+
+const debug = process.env.NODE_ENV !== 'production'
+
 export function getRank() {
-  const url = '/api/getRank'
+  const url = debug ? '/api/getRank' : 'http://47.95.225.38/music/api/getRank'
   const data = Object.assign({}, commonParams, {
     needNewCode: 1,
     platform: 'h5',
@@ -16,7 +18,7 @@ export function getRank() {
 }
 
 export function getRankList(id) {
-  const url = '/api/getRankList'
+  const url = debug ? '/api/getRankList' : 'http://47.95.225.38/music/api/getRankList'
   const data = {
     g_tk: 5381,
     uin: 0,

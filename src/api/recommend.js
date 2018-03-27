@@ -2,6 +2,8 @@ import jsonp from 'assets/js/jsonp'
 import {commonParams} from './config'
 import axios from 'axios'
 
+const debug = process.env.NODE_ENV !== 'production'
+
 export function getRecommend() {
   const url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg'
   const data = Object.assign({}, commonParams, {
@@ -17,7 +19,7 @@ export function getRecommend() {
 }
 
 export function getDiss() {
-  const url = 'api/getDiss'
+  const url = debug ? 'api/getDiss' : 'http://47.95.225.38/music/api/getDiss'
   const data = Object.assign({}, commonParams, {
     picmid: 1,
     rnd: Math.random(),
@@ -41,7 +43,7 @@ export function getDiss() {
 }
 
 export function getDetail(id) {
-  const url = 'api/getCdInfo'
+  const url = debug ? 'api/getCdInfo' : 'http://47.95.225.38/music/api/getCdInfo'
   const data = Object.assign({}, commonParams, {
     type: 1,
     json: 1,
