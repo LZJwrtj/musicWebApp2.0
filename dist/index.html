@@ -1,0 +1,16 @@
+<!DOCTYPE html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>musicapp</title><script>(function (doc, win) {
+        var docEle = doc.documentElement,
+          resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+          recalc = function () {
+            var clientWidth = docEle.clientWidth;
+            if (!clientWidth) return;
+            if (clientWidth > 750) {
+              docEle.style.fontSize = '100px';
+            } else {
+              docEle.style.fontSize = 100 * (clientWidth / 750) + 'px';
+            }
+          }
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+      })(document, window)</script><link href=static/css/app.c47ed9740148d19eaee73b3566d6e451.css rel=stylesheet></head><body><div id=app></div><script type=text/javascript src=static/js/manifest.b439b4ca09d47fe1bf50.js></script><script type=text/javascript src=static/js/vendor.51451e3b0d7f57bd56ea.js></script><script type=text/javascript src=static/js/app.1bf240de5957a32eeea6.js></script></body></html>
